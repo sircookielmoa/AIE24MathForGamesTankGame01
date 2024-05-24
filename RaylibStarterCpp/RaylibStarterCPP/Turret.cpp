@@ -1,6 +1,7 @@
 #include "Turret.h"
 
 #include "iostream"
+#include "SpriteObject.h"
 
 void Turret::OnUpdate(float deltaTime)
 {
@@ -17,4 +18,10 @@ void Turret::OnUpdate(float deltaTime)
 
     Rotate(spin * deltaTime);
     std::cout << spin << std::endl;
+
+    if (raylib::IsKeyPressed(raylib::KeyboardKey::KEY_SPACE))
+    {
+        
+    }
 }
+
