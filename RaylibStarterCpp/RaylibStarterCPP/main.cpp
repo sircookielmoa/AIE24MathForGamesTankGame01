@@ -6,6 +6,7 @@
 #include "Vector3.h"
 #include "TankPlayer.h"
 #include "Turret.h"
+#include "Bullet.h"
 
 #pragma warning(pop)
 
@@ -13,23 +14,29 @@ int main(int argc, char* argv[])
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    int screenWidth = 1920;
-    int screenHeight = 1080;
+    int screenWidth = 1280;
+    int screenHeight = 720;
 
     raylib::InitWindow(screenWidth, screenHeight, "ULTIMATE AWESOME TANK SIMLATOR(VERY COOL !)!");
 
     raylib::SetTargetFPS(60);
 
-    raylib::Texture2D tankSprite= raylib::LoadTexture("res/tank_green.png");
-    raylib::Texture2D turretSprite = raylib::LoadTexture("res/tankGreen_barrel1.png");
+    raylib::Texture2D tankSprite= raylib::LoadTexture("res/tankBody_blue_outline.png");
+    raylib::Texture2D turretSprite = raylib::LoadTexture("res/homersMouth.png");
+    raylib::Texture2D bulletSprite = raylib::LoadTexture("res/homersSpit.png");
 
     TankPlayer Player;
     Turret Child;
+    GameObject BulletSpawn;
     Player.Sprite = &tankSprite;
-    Child.SetParent(&Player);
     Player.SetLocalPosition(screenWidth / 2, screenHeight / 2);
+    Child.SetParent(&Player);
     Child.Sprite = &turretSprite;
     Child.SetLocalPosition(50,100);
+    BulletSpawn.SetParent(&Child);
+    BulletSpawn.SetLocalPosition(60, -40);
+
+    std::vector <Bullet> bulletpool{};
 
     //--------------------------------------------------------------------------------------
 
@@ -41,16 +48,38 @@ int main(int argc, char* argv[])
         float deltaTime = raylib::GetFrameTime();
 
         Player.Update(deltaTime);
+
+        if (raylib::IsKeyPressed(raylib::KeyboardKey::KEY_SPACE))
+        {
+            Bullet Bullet;
+            Bullet.Update(deltaTime);
+            Bullet.Sprite = &bulletSprite;
+
+            Bullet.SetLocalRotation(BulletSpawn.GetWorldRotation());
+            Bullet.SetLocalPosition(BulletSpawn.GetWorldPosition());
+
+            bulletpool.push_back(Bullet);
+        }
+
+        for (size_t i = 0; i < bulletpool.size(); i++)
+        {
+            bulletpool[i].Update(deltaTime);
+        }
+
         //----------------------------------------------------------------------------------
 
         // Draw
         //----------------------------------------------------------------------------------
         raylib::BeginDrawing();
 
-        raylib::ClearBackground(raylib::BLACK);
+        raylib::ClearBackground(raylib::RAYWHITE);
 
         Player.Draw();
-       
+        for (size_t i = 0; i < bulletpool.size(); i++)
+        {
+            bulletpool[i].Draw();
+        }
+
         raylib::EndDrawing();
         //----------------------------------------------------------------------------------
     }

@@ -1,11 +1,11 @@
 #include "Bullet.h"
+#include "Vector3.h"
+#include "Matrix3.h"
 
 void Bullet::OnUpdate(float deltaTime)
 {
-	float bulletVelocity = 0.0f;
+	float bulletVelocity = 400.0f;
 
-	if (raylib::IsKeyDown(raylib::KeyboardKey::KEY_SPACE))
-	{
-
-	}
+	//stupid
+	Translate(GetForward() * (bulletVelocity * deltaTime));
 }
