@@ -39,5 +39,4 @@ void TankPlayer::OnUpdate(float deltaTime)
     MathClasses::Vector3 finalMove = GetForward() * (yMove * deltaTime);
 
     Translate(finalMove);
-    std::cout << finalMove.ToString() << std::endl;
 }

@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 
     raylib::InitWindow(screenWidth, screenHeight, "ULTIMATE AWESOME TANK SIMLATOR(VERY COOL !)!");
 
-    raylib::SetTargetFPS(60);
+    raylib::SetTargetFPS(60000);
 
     raylib::Texture2D tankSprite= raylib::LoadTexture("res/tankBody_blue_outline.png");
     raylib::Texture2D turretSprite = raylib::LoadTexture("res/homersMouth.png");
@@ -66,6 +66,8 @@ int main(int argc, char* argv[])
             bulletpool[i].Update(deltaTime);
         }
 
+
+
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -79,7 +81,7 @@ int main(int argc, char* argv[])
         {
             bulletpool[i].Draw();
         }
-
+        raylib::DrawFPS(10, 10);
         raylib::EndDrawing();
         //----------------------------------------------------------------------------------
     }

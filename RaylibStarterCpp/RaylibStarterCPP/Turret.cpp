@@ -19,7 +19,6 @@ void Turret::OnUpdate(float deltaTime)
     }
 
     Rotate(spin * deltaTime);
-    std::cout << spin << std::endl;
 
 }
 
