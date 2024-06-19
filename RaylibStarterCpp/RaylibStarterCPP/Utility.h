@@ -4,7 +4,7 @@
 
 struct Plane {
     Plane(const MathClasses::Vector3 p1, const MathClasses::Vector3 p2);
-    Plane() {}
+    Plane() { N = Vector3(0, 0, 0); d = 0; }
     Plane(float x, float y, float d) : N(x, y, 0), d(d) {}
     Plane(const Vector3& n, float d) : N(n), d(d) {}
 
@@ -27,3 +27,8 @@ Plane::Plane(const MathClasses::Vector3 p1, const MathClasses::Vector3 p2)
     d = -p1.Dot(N);
 }
 
+enum ePlaneResult : int {
+    FRONT = 1,
+    BACK = -1,
+    INTERSECTS = 0
+};
