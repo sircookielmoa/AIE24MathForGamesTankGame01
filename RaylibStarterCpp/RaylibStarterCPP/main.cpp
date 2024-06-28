@@ -7,6 +7,7 @@
 #include "TankPlayer.h"
 #include "Turret.h"
 #include "Bullet.h"
+#include "Utility.h"
 
 #pragma warning(pop)
 
@@ -66,6 +67,7 @@ int main(int argc, char* argv[])
             bulletpool[i].Update(deltaTime);
         }
 
+        Plane(0, 1280, 0);
 
         //----------------------------------------------------------------------------------
 
