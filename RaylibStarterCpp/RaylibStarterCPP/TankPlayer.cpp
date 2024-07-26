@@ -14,21 +14,21 @@ void TankPlayer::OnUpdate(float deltaTime)
     float spin = 0.0f;
 
     // W-S for UP-DOWN movement
-    if (raylib::IsKeyDown(raylib::KeyboardKey::KEY_W))
+    if (IsKeyDown(KeyboardKey::KEY_W))
     {
         yMove += MOVESPEED;
     }
-    if (raylib::IsKeyDown(raylib::KeyboardKey::KEY_S))
+    if (IsKeyDown(KeyboardKey::KEY_S))
     {
         yMove -= MOVESPEED;
     }
 
     // A-D for rotating movement
-    if (raylib::IsKeyDown(raylib::KeyboardKey::KEY_A))
+    if (IsKeyDown(KeyboardKey::KEY_A))
     {
         spin -= SPINSPEED;
     }
-    if (raylib::IsKeyDown(raylib::KeyboardKey::KEY_D))
+    if (IsKeyDown(KeyboardKey::KEY_D))
     {
         spin += SPINSPEED;
     }

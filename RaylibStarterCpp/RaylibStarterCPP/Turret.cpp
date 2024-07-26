@@ -9,11 +9,11 @@ void Turret::OnUpdate(float deltaTime)
 {
 	float spin = 0.0f;
 
-    if (raylib::IsKeyDown(raylib::KeyboardKey::KEY_Q))
+    if (IsKeyDown(KeyboardKey::KEY_Q))
     {
         spin -= SPINSPEED;
     }
-    if (raylib::IsKeyDown(raylib::KeyboardKey::KEY_E))
+    if (IsKeyDown(KeyboardKey::KEY_E))
     {
         spin += SPINSPEED;
     }

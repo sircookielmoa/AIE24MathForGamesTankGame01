@@ -32,4 +32,3 @@ namespace MathClasses
         friend bool operator!=(Vector3 a, Vector3 b);
 	};
 }
-using Vector3 = MathClasses::Vector3;

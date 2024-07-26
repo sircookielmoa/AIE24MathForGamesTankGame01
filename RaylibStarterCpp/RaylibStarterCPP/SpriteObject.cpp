@@ -4,7 +4,7 @@ SpriteObject::SpriteObject()
 {
     Sprite = nullptr;
     Origin = MathClasses::Vector3(0.5f, 0.5f, 0.5f);
-    Tint = raylib::Color{ 255, 255, 255, 255 };
+    Tint = Color{ 255, 255, 255, 255 };
 }
 
 void SpriteObject::OnDraw()
@@ -26,7 +26,7 @@ void SpriteObject::OnDraw()
 
     
 
-    raylib::DrawTexturePro(
+    DrawTexturePro(
         *Sprite,
         { 0,0, (float)Sprite->width, (float)Sprite->height },
         { pos.x, pos.y, Sprite->width * scl.x, Sprite->height * scl.y },

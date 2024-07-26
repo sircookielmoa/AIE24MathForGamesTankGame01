@@ -1,5 +1,5 @@
 #pragma warning( push , 0)
-#include "raylib_cpp.h"
+#include "Raylib.h"
 #include "SpriteObject.h"
 #include "Colour.h"
 #include "Matrix3.h"
@@ -7,7 +7,8 @@
 #include "TankPlayer.h"
 #include "Turret.h"
 #include "Bullet.h"
-#include "Utility.h"
+#include "PlaneCollision.h"
+
 
 #pragma warning(pop)
 
@@ -18,39 +19,55 @@ int main(int argc, char* argv[])
     int screenWidth = 1280;
     int screenHeight = 720;
 
-    raylib::InitWindow(screenWidth, screenHeight, "ULTIMATE AWESOME TANK SIMLATOR(VERY COOL !)!");
+    InitWindow(screenWidth, screenHeight, "ULTIMATE AWESOME homer SIMLATOR(VERY COOL !)!");
 
-    raylib::SetTargetFPS(60000);
+    SetTargetFPS(600000);
 
-    raylib::Texture2D tankSprite= raylib::LoadTexture("res/tankBody_blue_outline.png");
-    raylib::Texture2D turretSprite = raylib::LoadTexture("res/homersMouth.png");
-    raylib::Texture2D bulletSprite = raylib::LoadTexture("res/homersSpit.png");
+    Texture2D tankSprite= LoadTexture("res/tankBody_blue_outline.png");
+    Texture2D turretSprite = LoadTexture("res/homersMouth.png");
+    Texture2D bulletSprite = LoadTexture("res/homersSpit.png");
 
-    TankPlayer Player;
-    Turret Child;
+    TankPlayer tank;
+    Turret turret;
     GameObject BulletSpawn;
-    Player.Sprite = &tankSprite;
-    Player.SetLocalPosition(screenWidth / 2, screenHeight / 2);
-    Child.SetParent(&Player);
-    Child.Sprite = &turretSprite;
-    Child.SetLocalPosition(50,100);
-    BulletSpawn.SetParent(&Child);
+    tank.Sprite = &tankSprite;
+    tank.SetLocalPosition(screenWidth / 2, screenHeight / 2);
+    turret.SetParent(&tank);
+    turret.Sprite = &turretSprite;
+    turret.SetLocalPosition(50,100);
+    BulletSpawn.SetParent(&turret);
     BulletSpawn.SetLocalPosition(60, -40);
+
+    std::vector<PlaneCollision> borders{ 4 };
+    //BORDER TIME :D
+    //north
+    borders[0] = PlaneCollision(0.0f, 1.0f, 0.0f, 0);
+
+    //East boarder 
+    borders[1] = PlaneCollision(-1.0f, 0.0f, 0.0f, screenWidth);
+
+    //South boarder 
+    borders[2] = PlaneCollision(0.0f, -1.0f, 0.0f, screenHeight);
+
+    //West boarder 
+    borders[3] = PlaneCollision(1.0f, 0.0f, 0.0f, 0);
+
+
 
     std::vector <Bullet> bulletpool{};
 
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    while (!raylib::WindowShouldClose())    // Detect window close button or ESC key
+    while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        float deltaTime = raylib::GetFrameTime();
+        float deltaTime = GetFrameTime();
 
-        Player.Update(deltaTime);
+        tank.Update(deltaTime);
 
-        if (raylib::IsKeyPressed(raylib::KeyboardKey::KEY_SPACE))
+        if (IsKeyPressed(KeyboardKey::KEY_SPACE))
         {
             Bullet Bullet;
             Bullet.Update(deltaTime);
@@ -67,29 +84,27 @@ int main(int argc, char* argv[])
             bulletpool[i].Update(deltaTime);
         }
 
-        Plane(0, 1280, 0);
-
         //----------------------------------------------------------------------------------
 
         // Draw
         //----------------------------------------------------------------------------------
-        raylib::BeginDrawing();
+        BeginDrawing();
 
-        raylib::ClearBackground(raylib::RAYWHITE);
+        ClearBackground(RAYWHITE);
 
-        Player.Draw();
+        tank.Draw();
         for (size_t i = 0; i < bulletpool.size(); i++)
         {
             bulletpool[i].Draw();
         }
-        raylib::DrawFPS(10, 10);
-        raylib::EndDrawing();
+        DrawFPS(10, 10);
+        EndDrawing();
         //----------------------------------------------------------------------------------
     }
 
     // De-Initialization
     //--------------------------------------------------------------------------------------   
-    raylib::CloseWindow();        // Close window and OpenGL context
+    CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
     return 0;
