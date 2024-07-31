@@ -9,9 +9,10 @@ class SpriteObject : public GameObject
 {
 public:
     Texture2D* Sprite;
-    MathClasses::Vector3 Origin;
 
-    Color Tint;
+	MathClasses::Vector3 Origin;
+
+    MathClasses::Colour Tint;
 
     SpriteObject();
 protected:

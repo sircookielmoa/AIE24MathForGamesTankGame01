@@ -176,7 +176,7 @@
     <ClCompile Include="CircleCollision.cpp" />
     <ClCompile Include="Colour.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -191,6 +191,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CircleCollision.h" />
     <ClInclude Include="Colour.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />

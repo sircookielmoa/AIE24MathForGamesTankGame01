@@ -1,9 +1,7 @@
 #pragma once
 
-#include "GameObject.h"
-#include "SpriteObject.h"
+#include "TankPlayer.h"
 
-#include <iostream>
 
 class Turret : public SpriteObject
 {
