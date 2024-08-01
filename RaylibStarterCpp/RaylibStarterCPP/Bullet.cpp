@@ -9,3 +9,8 @@ void Bullet::OnUpdate(float deltaTime)
 	//stupid
 	Translate(GetForward() * (bulletVelocity * deltaTime));
 }
+
+Bullet::~Bullet()
+{
+	delete collisionObject;
+}

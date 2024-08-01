@@ -12,7 +12,7 @@ public:
 
 	MathClasses::Vector3 Origin;
 
-    MathClasses::Colour Tint;
+    Color Tint;
 
     SpriteObject();
 protected:

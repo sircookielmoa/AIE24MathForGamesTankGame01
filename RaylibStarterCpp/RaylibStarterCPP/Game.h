@@ -26,9 +26,10 @@ private:
 	Texture2D tankSprite;
 	Texture2D tankTurretSprite;
 	Texture2D tankBullet;
-	Texture2D barrelSptite;
+	Texture2D barrelSprite;
 
-	std::vector<PlaneCollision> boarders{ 4 };
+
+	std::vector<PlaneCollision> awesomeBorder{};
 	std::vector<CircleCollision*> entities{};
 
 	std::vector<Bullet*> bulletsInWorld{};

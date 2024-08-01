@@ -19,7 +19,6 @@ Game::~Game()
 
 }
 
-//int main(int argc, char* argv[])
     // Initialization
     //--------------------------------------------------------------------------------------
 void Game::Initialization()
@@ -36,124 +35,110 @@ void Game::Initialization()
     barrel = new CircleCollision;
 
     //load necessary textures
-        //Texture2D tankSprite= LoadTexture("res/tankBody_blue_outline.png");
-        //Texture2D turretSprite = LoadTexture("res/homersMouth.png");
-        //Texture2D bulletSprite = LoadTexture("res/homersSpit.png");
     tankSprite = LoadTexture("res/tankBody_blue_outline.png");
     tankTurretSprite = LoadTexture("res/homersMouth.png");
     tankBullet = LoadTexture("res/homersSpit.png");
 
 
-    //TankPlayer tank;
-    //Turret turret;
-    //GameObject BulletSpawn;
-    //tank.Sprite = &Game::tankSprite;
-    //tank.SetLocalPosition(screenWidth / 2, screenHeight / 2);
-    //turret.SetParent(&tank);
-    //turret.Sprite = &Game::tankTurretSprite;
-    //turret.SetLocalPosition(50,100);
-    //BulletSpawn.SetParent(&turret);
-    //BulletSpawn.SetLocalPosition(60, -40);
-    //The player initialization
     player->Sprite = &tankSprite;
     player->SetLocalPosition(screenWidth / 2, screenHeight / 2);
 
-    //The tanks's turret initialization
+    //Homer's mouth initialization
     turret->SetParent(player);
     turret->Sprite = &tankTurretSprite;
-    turret->Origin = MathClasses::Vector3(0.0f, 0.5f, 0.5f);
+    turret->Origin = MathClasses::Vector3(0.25f, 0.24f, 0.5f);
 
-    //The barrel initialization
+    //Homer's lips pivot point initialization
     barrel->SetLocalPosition(1000, 200);
     barrel->radius = 20.0f;
     barrel->center = barrel->GetLocalPosition();
-    barrel->Sprite = &barrelSptite;
+    barrel->Sprite = &barrelSprite;
 
-
-    std::vector<PlaneCollision> borders{ 4 };
     //BORDER TIME :D
     //north
-    borders[0] = PlaneCollision(0.0f, 1.0f, 0.0f, 0);
+    awesomeBorder.push_back(PlaneCollision(0.0f, 1.0f, 0.0f, 0));
 
-    //East boarder 
-    borders[1] = PlaneCollision(-1.0f, 0.0f, 0.0f, screenWidth);
+    //east
+    awesomeBorder.push_back(PlaneCollision(-1.0f, 0.0f, 0.0f, screenWidth));
 
-    //South boarder 
-    borders[2] = PlaneCollision(0.0f, -1.0f, 0.0f, screenHeight);
+    //south 
+    awesomeBorder.push_back(PlaneCollision(0.0f, -1.0f, 0.0f, screenHeight));
 
-    //West boarder 
-    borders[3] = PlaneCollision(1.0f, 0.0f, 0.0f, 0);
+    //west
+    awesomeBorder.push_back(PlaneCollision(1.0f, 0.0f, 0.0f, 0));
 
 }
         // Update
         //----------------------------------------------------------------------------------
 void Game::Update()
 {
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
         float deltaTime = GetFrameTime();
 
-        player.Update(deltaTime);
+        player->Update(deltaTime);
 
         //bullet shooting :)
-        if (IsKeyPressed(KEY_SPACE))
+        if (IsKeyDown(KEY_SPACE))
         {
-            //Bullet Bullet;
-            //Bullet.Update(deltaTime);
-            //Bullet.Sprite = &bulletSprite;
-
-            //Bullet.SetLocalRotation(BulletSpawn.GetWorldRotation());
-            //Bullet.SetLocalPosition(BulletSpawn.GetWorldPosition());
-
-            //bulletpool.push_back(Bullet);
 
             Bullet* bullet = new Bullet;
             bullet->Sprite = &tankBullet;
             bullet->collisionObject = new CircleCollision;
 
-            MathClasses::Vector3 offset = MathClasses::Vector3(turret->Sprite->width + 20, 0, 1);
+            MathClasses::Vector3 offset = MathClasses::Vector3(turret->Sprite->width + -100, 50, 1);
 
-            bullet->SetlocalRotation(turret->GetWorldRotation());
+            bullet->SetLocalRotation(turret->GetWorldRotation());
 
             bullet->SetLocalPosition(turret->GetWorldMatrix() * offset);
 
             bulletsInWorld.push_back(bullet);
 
             size_t amount = bulletsInWorld.size();
-            std::cout << amount << std::endl;
-
         }
-
-        for (size_t i = 0; i < bulletpool.size(); i++)
+        //check for any collisions
+        for (unsigned int i = 0; i < bulletsInWorld.size(); i++)
         {
-            bulletpool[i].Update(deltaTime);
+            bulletsInWorld[i]->collisionObject->radius = 3;
+            bulletsInWorld[i]->collisionObject->center = bulletsInWorld[i]->GetLocalPosition();
+
+            //collision against awesomeBorders
+            for (unsigned int p = 0; p < awesomeBorder.size(); p++)
+            {
+	            if (bulletsInWorld[i]-> collisionObject->Overlaps(&awesomeBorder[p]))
+	            {
+                    bulletsToRemove.push_back(bulletsInWorld[i]);
+	            }
+            }
         }
 
-    }
+        //delete bullets that collide with awesomeBorders
+        for (unsigned int i = 0; i < bulletsInWorld.size(); i++)
+        {
+            for (unsigned int j = 0; j < bulletsToRemove.size(); j++)
+            {
+                if (bulletsToRemove[j] == bulletsInWorld[i])
+                {
+                    bulletsInWorld.erase(bulletsInWorld.begin() + i);
+                    delete bulletsToRemove[j];
+                }
+            }
+        }
+        bulletsToRemove.clear();
 
-        //----------------------------------------------------------------------------------
+        for (size_t i = 0; i < bulletsInWorld.size(); i++)
+        {
+            bulletsInWorld[i]->Update(deltaTime);
+        }
 
+}
         // Draw
-        //----------------------------------------------------------------------------------
-        BeginDrawing();
+		//----------------------------------------------------------------------------------
+void Game::Draw()
+{
 
-        ClearBackground(RAYWHITE);
-
-        tank.Draw();
-        for (size_t i = 0; i < bulletpool.size(); i++)
+        player->Draw();
+        for (size_t i = 0; i < bulletsInWorld.size(); i++)
         {
-            bulletpool[i].Draw();
+            bulletsInWorld[i]->Draw();
         }
-        DrawFPS(10, 10);
-        EndDrawing();
-        //----------------------------------------------------------------------------------
-    }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------   
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
-
-    return 0;
 }
