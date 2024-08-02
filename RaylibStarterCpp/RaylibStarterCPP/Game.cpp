@@ -73,13 +73,19 @@ void Game::Initialization()
 void Game::Update()
 {
         float deltaTime = GetFrameTime();
+        float maxTime = .06f;
 
+        if (fired) { timer += (float)GetFrameTime(); }
+        if (timer >= maxTime) { fired = false; }
         player->Update(deltaTime);
 
-        //bullet shooting :)
-        if (IsKeyDown(KEY_SPACE))
+		//bullet shooting :)
+        //implement a timeout where like, theres a cooldown per shot
+		//i.e., increment a timer each frame Space is held and respan if it is ok
+        if (IsKeyDown(KEY_SPACE) && !fired)
         {
-
+            fired = true;
+            timer = 0;
             Bullet* bullet = new Bullet;
             bullet->Sprite = &tankBullet;
             bullet->collisionObject = new CircleCollision;
@@ -93,6 +99,7 @@ void Game::Update()
             bulletsInWorld.push_back(bullet);
 
             size_t amount = bulletsInWorld.size();
+        	std::cout << "P'TOOIE!" << '\n';
         }
         //check for any collisions
         for (unsigned int i = 0; i < bulletsInWorld.size(); i++)

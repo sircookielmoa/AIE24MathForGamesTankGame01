@@ -18,7 +18,8 @@ public:
 	void Draw();
 
 private:
-
+	float timer = 0.f;
+	bool fired;
 	TankPlayer* player;
 	Turret* turret;
 	CircleCollision* barrel;
