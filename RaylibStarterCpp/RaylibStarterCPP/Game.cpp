@@ -16,7 +16,8 @@ Game::~Game()
     }
 
     delete player;
-
+    delete turret;
+    delete barrel;
 }
 
     // Initialization
